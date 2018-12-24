@@ -1,0 +1,8 @@
+Import-Module activedirectory
+$domains = Get-ADForest | select -ExpandProperty domains
+$Servers = @()
+
+foreach($domain in $domains)
+{
+    Get-ADComputer -Filter {OperatingSystem -Like "*Server*"} -Server $domain -Property * | Format-Table Name, OperatingSystem, OperatingSystemVersion -Wrap -Auto
+}
