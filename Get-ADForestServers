@@ -1,8 +1,10 @@
-Import-Module activedirectory
+Import-Module activedirectory #
 $domains = Get-ADForest | select -ExpandProperty domains
 $Servers = @()
 
 foreach($domain in $domains)
 {
-    Get-ADComputer -Filter {OperatingSystem -Like "*Server*"} -Server $domain -Property * | Format-Table Name, OperatingSystem, OperatingSystemVersion -Wrap -Auto
+    $servers += Get-ADComputer -Filter {OperatingSystem -Like "*Server*"} -Server $domain -Property * | Select Name, DNSHostName
+    Write-host -NoNewline "." # just adds a dot so you know it is still working.
 }
+$servers | export-csv C:\scripts\IE-ESCStatus\forest_server_list.txt
