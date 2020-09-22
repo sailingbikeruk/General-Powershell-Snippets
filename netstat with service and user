@@ -1,0 +1,1 @@
+ get-nettcpconnection | select local*,remote*,state,@{Name="Process";Expression={(Get-Process -Id $_.OwningProcess).ProcessName}},@{Name="User";Expression={Get-Process -Id $_.OwningProcess -IncludeUsername | select -expandproperty username}} |ft
